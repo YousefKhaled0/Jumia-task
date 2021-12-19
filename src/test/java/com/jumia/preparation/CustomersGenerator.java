@@ -29,4 +29,23 @@ public class CustomersGenerator {
 
 		return Arrays.asList(customer1, customer2, customer3);
 	}
+
+	public static List<Customer> twoValidOneInvalid() {
+		Customer customer1 = new Customer();
+		customer1.setId(0);
+		customer1.setName("Houda Houda");
+		customer1.setPhone("(212) 654654536");
+
+		Customer customer2 = new Customer();
+		customer2.setId(1);
+		customer2.setName("Ogwal David");
+		customer2.setPhone("(212) 654654537");
+
+		Customer customer3 = new Customer();
+		customer3.setId(2);
+		customer3.setName("Walla's Singz Junior");
+		customer3.setPhone("(258) (212) 6546545360000");
+
+		return Arrays.asList(customer1, customer2, customer3);
+	}
 }

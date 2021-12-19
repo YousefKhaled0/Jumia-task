@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class SearchService implements ISearchService {
@@ -22,7 +23,18 @@ public class SearchService implements ISearchService {
 		return Collections.emptyList();
 	}
 
-	public boolean isValid(Customer customer) {
+	List<Customer> filterByState(List<Customer> customers, State state) {
+		// @formatter:off
+		if (state == null) return customers;
+		else if (state == State.VALID)
+			return customers.stream().filter(this::isValid)
+					.collect(Collectors.toList());
+		else return customers.stream().filter(customer -> !isValid(customer))
+					.collect(Collectors.toList());
+		// @formatter:on
+	}
+
+	boolean isValid(Customer customer) {
 		String code = customer.getPhone().substring(0, 5);
 		CountryPhoneCode countryPhoneCode = CountryPhoneCode.fromPhoneCode(code);
 		String validPhoneRegex = countryPhoneCode.getValidPhoneRegex();
