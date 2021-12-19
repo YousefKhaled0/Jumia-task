@@ -1,5 +1,6 @@
 package com.jumia.services;
 
+import com.jumia.custom.models.CountryPhoneCode;
 import com.jumia.custom.models.State;
 import com.jumia.entities.Customer;
 import com.jumia.exceptions.BadSearchCriteriaException;
@@ -19,5 +20,12 @@ public class SearchService implements ISearchService {
 		}
 
 		return Collections.emptyList();
+	}
+
+	public boolean isValid(Customer customer) {
+		String code = customer.getPhone().substring(0, 5);
+		CountryPhoneCode countryPhoneCode = CountryPhoneCode.fromPhoneCode(code);
+		String validPhoneRegex = countryPhoneCode.getValidPhoneRegex();
+		return customer.getPhone().matches(validPhoneRegex);
 	}
 }

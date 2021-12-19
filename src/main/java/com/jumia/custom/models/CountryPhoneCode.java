@@ -8,11 +8,11 @@ import com.jumia.util.CountryCodesUtil;
 public enum CountryPhoneCode {
 
 	// @formatter:off
-	CAMEROON("Cameroon",CountryCodesUtil.getCountryISOCodeFormName("Cameroon"), "(237)", "\\(237\\)\\ ?[2368]\\d{7,8}$"),
-	ETHIOPIA("Ethiopia",CountryCodesUtil.getCountryISOCodeFormName("Ethiopia"), "(251)", "\\(251\\)\\ ?[1-59]\\d{8}$"),
-	MOROCCO("Morocco",CountryCodesUtil.getCountryISOCodeFormName("Morocco"), "(212)", "\\(212\\)\\ ?[5-9]\\d{8}$"),
-	MOZAMBIQUE("Mozambique",CountryCodesUtil.getCountryISOCodeFormName("Mozambique"), "(258)", "\\(258\\)\\ ?[28]\\d{7,8}$"),
-	UGANDA("Uganda",CountryCodesUtil.getCountryISOCodeFormName("Uganda"), "(256)", "\\(256\\)\\ ?\\d{9}$");
+	CAMEROON("Cameroon",CountryCodesUtil.getCountryISOCodeFormName("Cameroon"), "(237)", "\\(237\\) ?[2368]\\d{7,8}$"),
+	ETHIOPIA("Ethiopia",CountryCodesUtil.getCountryISOCodeFormName("Ethiopia"), "(251)", "\\(251\\) ?[1-59]\\d{8}$"),
+	MOROCCO("Morocco",CountryCodesUtil.getCountryISOCodeFormName("Morocco"), "(212)", "\\(212\\) ?[5-9]\\d{8}$"),
+	MOZAMBIQUE("Mozambique",CountryCodesUtil.getCountryISOCodeFormName("Mozambique"), "(258)", "\\(258\\) ?[28]\\d{7,8}$"),
+	UGANDA("Uganda",CountryCodesUtil.getCountryISOCodeFormName("Uganda"), "(256)", "\\(256\\) ?\\d{9}$");
 	// @formatter:on
 
 	private final String name;
