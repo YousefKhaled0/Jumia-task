@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Customers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <section style="padding: 2%;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center mb-4">
+                    <h2 class="heading-section">Customers</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="alert alert-danger text-center col-md-12" role="alert" th:if="${isBad} ">
+                    <span th:text="${error}"/>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-wrap">
+                        <table class="table myaccordion text-center table-hover" id="accordion">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <span th:each="customer : ${customers}">
+                                <tr>
+                                    <th scope="row"><span th:text="${customer.name}"/></th>
+                                    <td><span th:text="${customer.phone}"/></td>
+                                </tr>
+                            </span>
+                        </tbody>
+                        </table>
+                        <div class="alert alert-warning text-center" role="alert" th:if="${isEmpty}">
+                            No results found.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.js+bootstrap.min.js+main.js.pagespeed.jc.dlSCf3QisA.js"></script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"6c0287771fda5bf9","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.12.0","si":100}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
