@@ -48,7 +48,7 @@ If you send a page less than 1 you will get and error http://18.223.169.130/api/
 
 Any combination of paramaters can be paged.
 
-To handle the SQLlit hibernate dialect and to able to use in an ORM way I found this open source library which implements it. https://github.com/ZsoltFabok/sqlite-dialect
+To handle the SQLlite hibernate dialect and to able to use in an ORM way I found this open source library which implements it. https://github.com/ZsoltFabok/sqlite-dialect
 
 MVN dependancy is
 
