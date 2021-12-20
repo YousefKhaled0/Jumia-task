@@ -10,9 +10,9 @@ There's two approaches for the implementations of this task [MVC and REST].
 
  if you try to access http://18.223.169.130/ you will automatically be redirected to http://18.223.169.130/customers
 
-where you are going to find a friendly HTML page with a search bar and table.
+where you are going to find a friendly HTML page with a search bar and a table.
 
-There's three querey parameters to use none of them are mandatory:
+There's three querey parameters to use none of them is mandatory:
 
 - CountryName e.g. Cameroon, Morocco.
 - CountryISOCode: which is an ISO representation of the country e.g. CM, ET, MA, MZ, UG
@@ -48,7 +48,7 @@ If you send a page less than 1 you will get and error http://18.223.169.130/api/
 
 Any combination of paramaters can be paged.
 
-To handle the SQLlit hiberneate dialect and to able to use in an ORM way I found this open source library which implements it. https://github.com/ZsoltFabok/sqlite-dialect
+To handle the SQLlit hibernate dialect and to able to use in an ORM way I found this open source library which implements it. https://github.com/ZsoltFabok/sqlite-dialect
 
 MVN dependancy is
 
