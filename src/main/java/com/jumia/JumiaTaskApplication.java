@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Import;
 public class JumiaTaskApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(JumiaTaskApplication.class, args);
 	}
 

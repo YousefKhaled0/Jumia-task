@@ -1,13 +1,20 @@
 package com.jumia.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class Customer {
 
+	@Id
 	private Integer id;
 
+	@Column(name = "name")
 	private String name;
 
+	@Column(name = "phone")
 	private String phone;
 
 	public Integer getId() {
