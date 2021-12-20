@@ -44,7 +44,7 @@ public class CustomersGenerator {
 		Customer customer3 = new Customer();
 		customer3.setId(2);
 		customer3.setName("Walla's Singz Junior");
-		customer3.setPhone("(258) (212) 6546545360000");
+		customer3.setPhone("(212) (212) 6546545360000");
 
 		return Arrays.asList(customer1, customer2, customer3);
 	}

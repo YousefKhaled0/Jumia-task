@@ -1,5 +1,6 @@
 package com.jumia.services;
 
+import com.jumia.custom.models.CountryPhoneCode;
 import com.jumia.custom.models.State;
 import com.jumia.entities.Customer;
 import com.jumia.exceptions.BadSearchCriteriaException;
@@ -14,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SearchServiceTest {
@@ -23,6 +26,71 @@ class SearchServiceTest {
 
 	@InjectMocks
 	SearchService searchService;
+
+	@Test
+	void test_search_by_country_state_is_null() {
+		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+				CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers("Morocco", null, null);
+		assertEquals(3, customers.size());
+	}
+
+	@Test
+	void test_search_by_country_state_is_valid() {
+		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+				CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers("Morocco", null, State.VALID);
+		assertEquals(2, customers.size());
+	}
+
+	@Test
+	void test_search_by_country_state_is_inValid() {
+		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+				CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers("Morocco", null, State.INVALID);
+		assertEquals(1, customers.size());
+	}
+
+
+
+	@Test
+	void test_search_by_country_iso_code_state_is_null() {
+		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+				CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers(null, "MA", null);
+		assertEquals(3, customers.size());
+	}
+
+	@Test
+	void test_search_by_country_iso_code_state_is_valid() {
+		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+				CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers(null, "MA", State.VALID);
+		assertEquals(2, customers.size());
+	}
+
+	@Test
+	void test_search_by_country_state_iso_code_is_inValid() {
+		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+				CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers(null, "MA", State.INVALID);
+		assertEquals(1, customers.size());
+	}
+
+	@Test
+	void test_search_return_valid_phone_numbers() {
+		when(customerRepo.findAll()).thenReturn(CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers(null, null, State.VALID);
+		assertEquals(2, customers.size());
+	}
+
+	@Test
+	void test_search_return_invalid_phone_numbers() {
+		when(customerRepo.findAll()).thenReturn(CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers(null, null, State.INVALID);
+		assertEquals(1, customers.size());
+	}
+
 
 	@Test
 	void test_either_country_name_or_ISO_code() {
