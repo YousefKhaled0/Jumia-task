@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,17 +24,19 @@ public class SearchService implements ISearchService {
 	@Override
 	public List<Customer> getCustomers(String countryName, String countryISOCode, State state) {
 
-		Country phoneCode = getPhoneCode(countryName, countryISOCode);
+		Country country = getCountryFromRequest(countryName, countryISOCode);
 
-		List<Customer> customers = new ArrayList<>();
-
-		if (phoneCode != null) {
-			customers.addAll(customerRepo.findByPhoneContaining(phoneCode.getPhoneCode()));
+		if (country == null) {
+			if (state == null) {
+				return customerRepo.findAll();
+			} else
+				return filterByState(customerRepo.findAll(), state);
 		} else {
-			customers.addAll(customerRepo.findAll());
+			if (state == null) {
+				return customerRepo.findByPhoneContaining(country.getPhoneCode());
+			} else
+				return filterByState(customerRepo.findByPhoneContaining(country.getPhoneCode()), state);
 		}
-
-		return filterByState(customers, state);
 	}
 
 	@Override
@@ -45,44 +46,60 @@ public class SearchService implements ISearchService {
 			throw new MinPageValueException();
 		}
 
-		Country phoneCode = getPhoneCode(countryName, countryISOCode);
+		Country country = getCountryFromRequest(countryName, countryISOCode);
 
-		List<Customer> customers = new ArrayList<>();
-
-		if (phoneCode != null) {
-			customers.addAll(customerRepo.findByPhoneContaining(phoneCode.getPhoneCode(), PageRequest.of(page - 1, 5)));
+		if (country == null) {
+			if (state == null) {
+				return customerRepo.findAll(PageRequest.of(page - 1, 5));
+			} else {
+				return filterByState(customerRepo.findAll(), state, page);
+			}
 		} else {
-			customers.addAll(customerRepo.findAll(PageRequest.of(page - 1, 5)));
+			if (state == null) {
+				return customerRepo.findByPhoneContaining(country.getPhoneCode(), PageRequest.of(page - 1, 5));
+			} else {
+				return filterByState(customerRepo.findByPhoneContaining(country.getPhoneCode()), state, page);
+			}
 		}
-
-		return filterByState(customers, state);
 	}
 
-	Country getPhoneCode(String countryName, String countryISOCode) {
+	List<Customer> filterByState(List<Customer> customers, State state, Integer page) {
+		List<Customer> customersByState = filterByState(customers, state);
+
+		int startIndex = Math.min(customersByState.size(), (page - 1) * 5);
+		int endIndex = Math.min(startIndex + 5, customersByState.size());
+
+		return customersByState.subList(startIndex, endIndex);
+	}
+
+	Country getCountryFromRequest(String countryName, String countryISOCode) {
+
 
 		if (Strings.isNotBlank(countryName) && Strings.isNotBlank(countryISOCode)) {
 			throw new BadSearchCriteriaException();
 		}
 
-		Country phoneCode = null;
+		Country country = null;
 
 		if (Strings.isNotBlank(countryName)) {
-			phoneCode = Country.fromCountryName(countryName);
+			country = Country.fromCountryName(countryName);
 		}
 
 		if (Strings.isNotBlank(countryISOCode)) {
-			phoneCode = Country.fromCountryISOCode(countryISOCode);
+			country = Country.fromCountryISOCode(countryISOCode);
 		}
 
-		return phoneCode;
+		return country;
 	}
 
 	List<Customer> filterByState(List<Customer> customers, State state) {
 		// @formatter:off
 		if (state == null) return customers;
+
 		else if (state == State.VALID)
 			return customers.stream().filter(this::isValid)
 					.collect(Collectors.toList());
+
 		else return customers.stream().filter(customer -> !isValid(customer))
 					.collect(Collectors.toList());
 		// @formatter:on

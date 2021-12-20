@@ -21,6 +21,7 @@ public class RestSearchController {
 			@RequestParam(name = "CountryISOCode", required = false) String countryISOCode,
 			@RequestParam(name = "State", required = false) State state,
 			@RequestParam(name = "page", required = false, defaultValue = "1") Integer page) {
+
 		return searchService.getCustomers(countryName, countryISOCode, state, page);
 	}
 

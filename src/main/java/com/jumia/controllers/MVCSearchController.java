@@ -21,10 +21,12 @@ public class MVCSearchController {
 	public String getCustomers(@RequestParam(name = "CountryName", required = false) String countryName,
 			@RequestParam(name = "CountryISOCode", required = false) String countryISOCode,
 			@RequestParam(name = "State", required = false) State state, ModelMap modelMap) {
+
 		List<Customer> customers = searchService.getCustomers(countryName, countryISOCode, state);
 		modelMap.addAttribute("isEmpty", customers.isEmpty());
 		modelMap.addAttribute("customers", customers);
 		return "index";
+
 	}
 
 	@GetMapping("/")

@@ -12,9 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -96,7 +95,7 @@ class SearchServiceTest {
 	@Test
 	void test_search_with_page_is_ok() {
 		when(customerRepo.findAll(any())).thenReturn(CustomersGenerator.twoValidOneInvalid());
-		List<Customer> customers = searchService.getCustomers(null, null, null , 1);
+		List<Customer> customers = searchService.getCustomers(null, null, null, 1);
 		assertEquals(3, customers.size());
 	}
 
@@ -140,6 +139,23 @@ class SearchServiceTest {
 	void test_null_state_get_all_phoneNumbers() {
 		List<Customer> customers = CustomersGenerator.twoValidOneInvalid();
 		assertEquals(3, searchService.filterByState(customers, null).size());
+	}
+
+	@Test
+	void test_filter_customers_with_paging() {
+		List<Customer> data = new ArrayList<>();
+		data.addAll(CustomersGenerator.twoValidOneInvalid());
+		data.addAll(CustomersGenerator.twoValidOneInvalid());
+		data.addAll(CustomersGenerator.twoValidOneInvalid());
+		data.addAll(CustomersGenerator.twoValidOneInvalid());
+		data.addAll(CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customersPageOne = searchService.filterByState(data, State.VALID, 1);
+		List<Customer> customersPageTwo = searchService.filterByState(data, State.VALID, 2);
+		List<Customer> customersPageThree = searchService.filterByState(data, State.VALID, 3);
+
+		assertEquals(5, customersPageOne.size());
+		assertEquals(5, customersPageTwo.size());
+		assertEquals(0, customersPageThree.size());
 	}
 
 }
