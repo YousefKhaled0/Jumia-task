@@ -41,3 +41,21 @@ You can also use CountryISOCode instead of CountryName e.g. http://18.223.169.13
 All the above works the same but there's a prefix api in the url e.g. http://18.223.169.130/api/customers?CountryName=Cameroon&State=VALID and instead of an html page the response is JSON.
 
 The rest implementation supports pagination the defualt page is 1 and max of each page is 5 records.
+
+http://18.223.169.130/api/customers?CountryName=Morocco&page=1 and this http://18.223.169.130/api/customers?CountryName=Morocco will return the same response.
+
+If you send a page less than 1 you will get and error http://18.223.169.130/api/customers?CountryName=Morocco&page=-1
+
+Any combination of paramaters can be paged.
+
+To handle the SQLlit hiberneate dialect and to able to use in an ORM way I found this open source library which implements it. https://github.com/ZsoltFabok/sqlite-dialect
+
+MVN dependancy is
+
+```xml
+<dependency>
+    <groupId>com.zsoltfabok</groupId>
+    <artifactId>sqlite-dialect</artifactId>
+    <version>1.0</version>
+</dependency>
+```
