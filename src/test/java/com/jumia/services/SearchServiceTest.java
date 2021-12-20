@@ -1,9 +1,10 @@
 package com.jumia.services;
 
-import com.jumia.custom.models.CountryPhoneCode;
+import com.jumia.custom.models.Country;
 import com.jumia.custom.models.State;
 import com.jumia.entities.Customer;
 import com.jumia.exceptions.BadSearchCriteriaException;
+import com.jumia.exceptions.MinPageValueException;
 import com.jumia.preparation.CustomersGenerator;
 import com.jumia.repos.CustomerRepo;
 import org.junit.jupiter.api.Test;
@@ -11,10 +12,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -29,7 +33,7 @@ class SearchServiceTest {
 
 	@Test
 	void test_search_by_country_state_is_null() {
-		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+		when(customerRepo.findByPhoneContaining(eq(Country.MOROCCO.getPhoneCode()))).thenReturn(
 				CustomersGenerator.twoValidOneInvalid());
 		List<Customer> customers = searchService.getCustomers("Morocco", null, null);
 		assertEquals(3, customers.size());
@@ -37,7 +41,7 @@ class SearchServiceTest {
 
 	@Test
 	void test_search_by_country_state_is_valid() {
-		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+		when(customerRepo.findByPhoneContaining(eq(Country.MOROCCO.getPhoneCode()))).thenReturn(
 				CustomersGenerator.twoValidOneInvalid());
 		List<Customer> customers = searchService.getCustomers("Morocco", null, State.VALID);
 		assertEquals(2, customers.size());
@@ -45,17 +49,15 @@ class SearchServiceTest {
 
 	@Test
 	void test_search_by_country_state_is_inValid() {
-		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+		when(customerRepo.findByPhoneContaining(eq(Country.MOROCCO.getPhoneCode()))).thenReturn(
 				CustomersGenerator.twoValidOneInvalid());
 		List<Customer> customers = searchService.getCustomers("Morocco", null, State.INVALID);
 		assertEquals(1, customers.size());
 	}
 
-
-
 	@Test
 	void test_search_by_country_iso_code_state_is_null() {
-		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+		when(customerRepo.findByPhoneContaining(eq(Country.MOROCCO.getPhoneCode()))).thenReturn(
 				CustomersGenerator.twoValidOneInvalid());
 		List<Customer> customers = searchService.getCustomers(null, "MA", null);
 		assertEquals(3, customers.size());
@@ -63,7 +65,7 @@ class SearchServiceTest {
 
 	@Test
 	void test_search_by_country_iso_code_state_is_valid() {
-		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+		when(customerRepo.findByPhoneContaining(eq(Country.MOROCCO.getPhoneCode()))).thenReturn(
 				CustomersGenerator.twoValidOneInvalid());
 		List<Customer> customers = searchService.getCustomers(null, "MA", State.VALID);
 		assertEquals(2, customers.size());
@@ -71,7 +73,7 @@ class SearchServiceTest {
 
 	@Test
 	void test_search_by_country_state_iso_code_is_inValid() {
-		when(customerRepo.findByPhoneContaining(eq(CountryPhoneCode.MOROCCO.getPhoneCode()))).thenReturn(
+		when(customerRepo.findByPhoneContaining(eq(Country.MOROCCO.getPhoneCode()))).thenReturn(
 				CustomersGenerator.twoValidOneInvalid());
 		List<Customer> customers = searchService.getCustomers(null, "MA", State.INVALID);
 		assertEquals(1, customers.size());
@@ -91,6 +93,17 @@ class SearchServiceTest {
 		assertEquals(1, customers.size());
 	}
 
+	@Test
+	void test_search_with_page_is_ok() {
+		when(customerRepo.findAll(any())).thenReturn(CustomersGenerator.twoValidOneInvalid());
+		List<Customer> customers = searchService.getCustomers(null, null, null , 1);
+		assertEquals(3, customers.size());
+	}
+
+	@Test
+	void test_page_less_than_1() {
+		assertThrows(MinPageValueException.class, () -> searchService.getCustomers("Cameroon", "", null, -1));
+	}
 
 	@Test
 	void test_either_country_name_or_ISO_code() {

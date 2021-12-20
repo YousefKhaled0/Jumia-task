@@ -1,11 +1,13 @@
 package com.jumia.controller;
 
-import com.jumia.controllers.SearchController;
+import com.jumia.controllers.RestSearchController;
 import com.jumia.entities.Customer;
 import com.jumia.exceptions.BadSearchCriteriaException;
 import com.jumia.exceptions.CountryISOCodeNotFoundException;
 import com.jumia.exceptions.CountryNameNotFoundException;
-import com.jumia.exceptions.handler.ResponseExceptionHandler;
+import com.jumia.exceptions.MinPageValueException;
+import com.jumia.exceptions.handler.MVCResponseExceptionHandler;
+import com.jumia.exceptions.handler.RestResponseExceptionHandler;
 import com.jumia.preparation.CustomersGenerator;
 import com.jumia.services.interfaces.ISearchService;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ExtendWith(MockitoExtension.class)
-class SearchControllerTest {
+class RestSearchControllerTest {
 
 	@Mock
 	private ISearchService searchService;
@@ -36,16 +38,16 @@ class SearchControllerTest {
 	private MockMvc mvc;
 
 	@InjectMocks
-	private SearchController searchController;
+	private RestSearchController restSearchController;
 
-	private static final String CUSTOMERS_URI = "/customers";
+	private static final String CUSTOMERS_URI = "/api/customers";
 
 	@BeforeEach
 	public void setup() {
 
 		// @formatter:off
-		mvc = MockMvcBuilders.standaloneSetup(searchController)
-				.setControllerAdvice(new ResponseExceptionHandler())
+		mvc = MockMvcBuilders.standaloneSetup(restSearchController)
+				.setControllerAdvice(new RestResponseExceptionHandler())
 				.build();
 		// @formatter:on
 	}
@@ -54,7 +56,7 @@ class SearchControllerTest {
 	void testValidResponseFromService_200_status() throws Exception {
 		List<Customer> customers = CustomersGenerator.customers();
 
-		when(searchService.getCustomers(any(), any(), any())).thenReturn(customers);
+		when(searchService.getCustomers(any(), any(), any() , any())).thenReturn(customers);
 
 		// @formatter:off
 		MockHttpServletResponse response = mvc
@@ -72,7 +74,7 @@ class SearchControllerTest {
 	void testValidResponseFromService_400_status_BadSearchCriteriaException() throws Exception {
 		List<Customer> customers = CustomersGenerator.customers();
 
-		when(searchService.getCustomers(any(), any(), any())).thenThrow(new BadSearchCriteriaException());
+		when(searchService.getCustomers(any(), any(), any() , any())).thenThrow(new BadSearchCriteriaException());
 
 		// @formatter:off
 		MockHttpServletResponse response = mvc
@@ -90,7 +92,7 @@ class SearchControllerTest {
 	void testValidResponseFromService_400_status_CountryNameNotFoundException() throws Exception {
 		List<Customer> customers = CustomersGenerator.customers();
 
-		when(searchService.getCustomers(any(), any(), any())).thenThrow(new CountryNameNotFoundException("EGYPT"));
+		when(searchService.getCustomers(any(), any(), any() , any())).thenThrow(new CountryNameNotFoundException("EGYPT"));
 
 		// @formatter:off
 		MockHttpServletResponse response = mvc
@@ -108,7 +110,25 @@ class SearchControllerTest {
 	void testValidResponseFromService_400_status_CountryISOCodeNotFoundException() throws Exception {
 		List<Customer> customers = CustomersGenerator.customers();
 
-		when(searchService.getCustomers(any(), any(), any())).thenThrow(new CountryISOCodeNotFoundException("EG"));
+		when(searchService.getCustomers(any(), any(), any() , any())).thenThrow(new CountryISOCodeNotFoundException("EG"));
+
+		// @formatter:off
+		MockHttpServletResponse response = mvc
+				.perform(get(CUSTOMERS_URI))
+				.andDo(print()).andReturn().getResponse();
+
+		// @formatter:on
+
+		int status = response.getStatus();
+		assertEquals(HttpStatus.BAD_REQUEST.value(), status);
+
+	}
+
+	@Test
+	void testValidResponseFromService_400_status_MinPageValueException() throws Exception {
+		List<Customer> customers = CustomersGenerator.customers();
+
+		when(searchService.getCustomers(any(), any(), any() , any())).thenThrow(new MinPageValueException());
 
 		// @formatter:off
 		MockHttpServletResponse response = mvc

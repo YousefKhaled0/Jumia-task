@@ -1,12 +1,12 @@
 package com.jumia;
 
-import com.jumia.exceptions.handler.ResponseExceptionHandler;
+import com.jumia.exceptions.handler.MVCResponseExceptionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import(ResponseExceptionHandler.class)
+@Import(MVCResponseExceptionHandler.class)
 public class JumiaTaskApplication {
 
 	public static void main(String[] args) {

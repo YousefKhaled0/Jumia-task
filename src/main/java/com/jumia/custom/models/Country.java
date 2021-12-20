@@ -5,7 +5,7 @@ import com.jumia.exceptions.CountryNameNotFoundException;
 import com.jumia.exceptions.PhoneCodeNotFoundException;
 import com.jumia.util.CountryCodesUtil;
 
-public enum CountryPhoneCode {
+public enum Country {
 
 	// @formatter:off
 	CAMEROON("Cameroon",CountryCodesUtil.getCountryISOCodeFormName("Cameroon"), "(237)", "\\(237\\) ?[2368]\\d{7,8}$"),
@@ -23,7 +23,7 @@ public enum CountryPhoneCode {
 	private final String phoneCode;
 	private final String validPhoneRegex;
 
-	CountryPhoneCode(String name, String countryISOCode, String phoneCode, String validPhoneRegex) {
+	Country(String name, String countryISOCode, String phoneCode, String validPhoneRegex) {
 		this.name = name;
 		this.countryISOCode = countryISOCode;
 		this.phoneCode = phoneCode;
@@ -46,33 +46,33 @@ public enum CountryPhoneCode {
 		return validPhoneRegex;
 	}
 
-	public static CountryPhoneCode fromCountryName(String name) {
-		CountryPhoneCode[] values = CountryPhoneCode.values();
-		for (CountryPhoneCode countryPhoneCode : values) {
-			if (countryPhoneCode.name.equals(name)) {
-				return countryPhoneCode;
+	public static Country fromCountryName(String name) {
+		Country[] values = Country.values();
+		for (Country country : values) {
+			if (country.name.equals(name)) {
+				return country;
 			}
 		}
 
 		throw new CountryNameNotFoundException(name);
 	}
 
-	public static CountryPhoneCode fromPhoneCode(String phoneCode) {
-		CountryPhoneCode[] values = CountryPhoneCode.values();
-		for (CountryPhoneCode countryPhoneCode : values) {
-			if (countryPhoneCode.phoneCode.equals(phoneCode)) {
-				return countryPhoneCode;
+	public static Country fromPhoneCode(String phoneCode) {
+		Country[] values = Country.values();
+		for (Country country : values) {
+			if (country.phoneCode.equals(phoneCode)) {
+				return country;
 			}
 		}
 
 		throw new PhoneCodeNotFoundException(phoneCode);
 	}
 
-	public static CountryPhoneCode fromCountryISOCode(String countryCode) {
-		CountryPhoneCode[] values = CountryPhoneCode.values();
-		for (CountryPhoneCode countryPhoneCode : values) {
-			if (countryPhoneCode.countryISOCode.equals(countryCode)) {
-				return countryPhoneCode;
+	public static Country fromCountryISOCode(String countryCode) {
+		Country[] values = Country.values();
+		for (Country country : values) {
+			if (country.countryISOCode.equals(countryCode)) {
+				return country;
 			}
 		}
 
