@@ -7,7 +7,7 @@ COPY pom.xml ./
 
 RUN apk update
 RUN apk add maven
-RUN mvn clean package 
+RUN mvn clean spring-boot:package
 
 WORKDIR target
 RUN ls
