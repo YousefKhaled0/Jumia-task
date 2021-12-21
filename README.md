@@ -2,7 +2,15 @@
 
 This project is hosted on AWS EC2 machine URL http://18.223.169.130/.
 
-If you are going to run locally URL is http://localhost:8080/.
+If you are going to run locally URL is http://localhost:8080/ using `mvn spring-boot:run`
+
+To build the docker file 
+
+`docker build . -t jumia:task`
+
+To run
+
+`docker run -dit -p 8080:8080 jumia:task`
 
 There's two approaches for the implementations of this task [MVC and REST].
 
