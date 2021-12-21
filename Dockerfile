@@ -9,5 +9,6 @@ RUN apk update
 RUN apk add maven
 RUN mvn clean package 
 RUN cd target
+RUN ls
 
 ENTRYPOINT ["java", "-jar", "jumia-task-0.0.1-SNAPSHOT.jar"]
