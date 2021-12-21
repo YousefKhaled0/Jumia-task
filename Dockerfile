@@ -2,7 +2,7 @@ FROM openjdk:8-jre-alpine3.9
 
 WORKDIR app
 
-COPY src ./
+COPY ./src ./
 COPY pom.xml ./
 
 RUN ls
