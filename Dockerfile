@@ -5,8 +5,6 @@ WORKDIR app
 COPY ./src ./
 COPY pom.xml ./
 
-RUN ls
-
 RUN apk update
 RUN apk add maven
 
