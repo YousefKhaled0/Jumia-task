@@ -38,7 +38,7 @@ You can also use CountryISOCode instead of CountryName e.g. http://18.223.169.13
 
 ## REST:
 
-All the above works the same but there's a prefix api in the url e.g. http://18.223.169.130/api/customers?CountryName=Cameroon&State=VALID and instead of an html page the response is JSON.
+All the above works the same but there's a prefix the word "api" in the url e.g. http://18.223.169.130/api/customers?CountryName=Cameroon&State=VALID and instead of an html page the response is JSON.
 
 The rest implementation supports pagination the defualt page is 1 and max of each page is 5 records.
 
