@@ -2,8 +2,8 @@ FROM openjdk:8-jre-alpine3.9
 
 WORKDIR app
 
-COPY ./src ./
-COPY pom.xml ./
+COPY src src
+COPY pom.xml pom.xml
 
 RUN apk update
 RUN apk add maven
