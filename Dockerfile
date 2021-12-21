@@ -7,7 +7,7 @@ COPY pom.xml ./
 
 RUN apk update
 RUN apk add maven
-RUN mvn -X clean package 
+RUN mvn clean package 
 RUN cd target
 
 ENTRYPOINT ["java", "-jar", "jumia-task-0.0.1-SNAPSHOT.jar"]
