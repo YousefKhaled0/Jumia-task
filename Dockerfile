@@ -8,7 +8,6 @@ COPY pom.xml ./
 RUN apk update
 RUN apk add maven
 
-RUN mvn clean install
 RUN mvn clean package
 
 
