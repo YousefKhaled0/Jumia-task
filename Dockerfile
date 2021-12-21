@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-alpine3.9
+FROM alpine:3.15.0
 
 WORKDIR app
 
@@ -6,6 +6,7 @@ COPY src src
 COPY pom.xml pom.xml
 
 RUN apk update
+RUN apk add openjdk8
 RUN apk add maven
 
 RUN mvn clean package
