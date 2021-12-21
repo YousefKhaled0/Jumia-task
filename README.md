@@ -26,7 +26,7 @@ If you pass no state just the country you will get a filtered list of all custom
 
 If you pass a state VALID with the country. it will responed with a list of customers who have valid phobe numbers from that country http://18.223.169.130/customers?CountryName=Cameroon&State=VALID
 
-the oppisite will be http://18.223.169.130/customers?CountryName=Cameroon&State=INVALID
+the opposite will be http://18.223.169.130/customers?CountryName=Cameroon&State=INVALID
 
 You can also use CountryISOCode instead of CountryName e.g. http://18.223.169.130/customers?CountryISOCode=CM&State=VALID
 
